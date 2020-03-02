@@ -20,7 +20,7 @@ class ScopeDisplayReact extends React.Component {
 
     const data = [{
         y: generateData(props.numPointsToPlotEachTick),
-        line: { color: 'blue' },
+        line: { color: 'red' },
       }];
 
     this.state = {
