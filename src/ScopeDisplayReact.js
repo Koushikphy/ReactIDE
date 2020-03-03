@@ -1,6 +1,10 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 
+const fs = require('fs')
+
+var ss = fs.readFileSync('package.json', "utf8")
+console.log(ss)
 
 
 function generateData(n) {

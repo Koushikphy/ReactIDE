@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Plotly from 'plotly.js';
-
 // import generateData from './generateData';
 
 const COLORS = ['red', 'green', 'blue'];
@@ -11,6 +10,7 @@ function generateData(n) {
   for (let i = 0; i < n; i++) {
     data.push(Math.random());
   }
+  
   return data;
 };
 
