@@ -10,13 +10,8 @@ import './App.css';
 
 
 
-function generateData(n) {
-  const data = [];
-  for (let i = 0; i < n; i++) {
-    data.push(Math.random());
-  }
-  return data;
-};
+
+
 
 
 const styles = theme => ({
@@ -45,28 +40,19 @@ const styles = theme => ({
 
 const App = ({ classes }) => {
 
-  const [numPlots, setNumPlots] = useState(1);
-  const [numPlotsText, setNumPlotsText] = useState(1);
-
   const [numPointsPerPlot, setNumPointsPerPlot] = useState(100);
-  const [numPointsPerPlotText, setNumPointsPerPlotText] = useState(100);
-
-  const [updateSpeed, setUpdateSpeed] = useState(1000);
-  const [updateSpeedText, setUpdateSpeedText] = useState(1000);
 
   return (
     <div className="App">
       <AppBar position="fixed" color="default">
         <Toolbar>
-          hvhvy
           <Button
             variant={'contained'}
             color="primary"
             className={classes.button}
             onClick={() => {
-              setNumPlots(numPlotsText);
-              setNumPointsPerPlot(numPointsPerPlotText);
-              setUpdateSpeed(updateSpeedText);
+              setNumPointsPerPlot(numPointsPerPlot+1);
+              // console.log(numPointsPerPlot)
             }}
             >
             Update plots

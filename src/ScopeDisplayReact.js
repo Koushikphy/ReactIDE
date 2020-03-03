@@ -1,11 +1,6 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 
-const fs = require('fs')
-
-var ss = fs.readFileSync('package.json', "utf8")
-console.log(ss)
-
 
 function generateData(n) {
   const data = [];
@@ -17,6 +12,7 @@ function generateData(n) {
 
 
 
+
 class ScopeDisplayReact extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +21,9 @@ class ScopeDisplayReact extends React.Component {
     const data = [{
         y: generateData(props.numPointsToPlotEachTick),
         line: { color: 'red' },
+        type: 'scatter',
+        opacity: 1,
+        mode: 'markers+lines',
       }];
 
     this.state = {
@@ -33,7 +32,6 @@ class ScopeDisplayReact extends React.Component {
       layout: {
         width: 1000,
         height: 700,
-        title: 'Scope Display React',
       },
       frames: [],
       config: {},
@@ -41,7 +39,34 @@ class ScopeDisplayReact extends React.Component {
       sliceNum: 1,
     };
 
+    this.tick = this.tick.bind(this);
   }
+
+  tick() {
+    const { numPlots, numPointsToPlotEachTick } = this.props;
+
+
+    const data = [{
+      y: generateData(numPointsToPlotEachTick),
+      line: { color: 'red' },
+      type: 'scatter',
+      opacity: 1,
+      mode: 'markers+lines',
+    }];
+
+
+    this.setState(oldState => {
+      return {
+        revision: oldState.revision + 1,
+        data,
+        layout: {
+          ...oldState.layout,
+          height: 700,
+        },
+      };
+    });
+  }
+
 
   componentDidMount() {
    console.log('mount')
@@ -51,8 +76,9 @@ class ScopeDisplayReact extends React.Component {
     console.log('unmount')
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('updated')
+  componentDidUpdate(prevProps) {
+    if(prevProps.numPointsToPlotEachTick != this.props.numPointsToPlotEachTick) this.tick()
+    // console.log('updated=>',this.props.numPointsToPlotEachTick)
   }
 
 
