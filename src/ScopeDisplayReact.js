@@ -52,33 +52,35 @@ function clamp(x, lower, upper) {
   return Math.max(lower, Math.min(x, upper));
 };
 
-// function startDragBehavior() {
+
+function startDragBehavior(a,b) {
+  console.log(a)
+  console.log(b)
 //   var d3 = Plotly.d3;
 //   var drag = d3.behavior.drag();
-//   drag.origin(function () {
-//       var transform = d3.select(this).attr("transform");
-//       var translate = transform.substring(10, transform.length - 1).split(/,| /);
-//       return {
-//           x: translate[0],
-//           y: translate[1]
-//       };
-//   });
-//   drag.on("drag", function () {
-//       var xmouse = d3.event.x,
-//           ymouse = d3.event.y;
-//       d3.select(this).attr("transform", "translate(" + [xmouse, ymouse] + ")");
-//       var handle = this.handle;
-//       var yaxis = figurecontainer._fullLayout.yaxis;
-//       handle.y = clamp(yaxis.p2l(ymouse), yaxis.range[0], yaxis.range[1]);
+//   var oldDatX, oldDatY, pIndex;
 
-//       updateFigure();
+//   drag.origin(function () {
+//       // saveOldData();
+//       let [x,y] = this.getAttribute('transform').slice(10,-1).split(/,| /);
+//       pIndex = this.index
+//       // if (index.length) {oldDatX = clone(dpsx); oldDatY = clone(dpsy);}
+//       return {x,y}
+//   })
+
+//   drag.on("drag", function () {
+//       let yaxis = figurecontainer._fullLayout.yaxis;
+//       let xaxis = figurecontainer._fullLayout.xaxis;
+
+      // let yVal = yaxis.p2l(d3.event.y)
+//       dpsy[pIndex] = yVal //dpsy is a reference to data, so this also modifies the data
+//       for (let i of index) dpsy[i] = yVal - oldDatY[pIndex] + oldDatY[i]
+//           Plotly.restyle(figurecontainer, {y: [dpsy]}, currentEditable)
+
 //   });
-//   drag.on("dragend", function () {
-//       updateFigure();
-//       d3.select(".scatterlayer .trace:first-of-type .points path:first-of-type").call(drag);
-//   });
-//   d3.selectAll(".scatterlayer .trace:first-of-type .points path").call(drag);
-// };
+//   drag.on("dragend", updateOnServer)
+//   d3.selectAll(`.scatterlayer .trace:nth-of-type(1) .points path`).call(drag);
+};
 
 
 
@@ -112,8 +114,8 @@ class ScopeDisplayReact extends React.Component {
     this.tick = this.tick.bind(this);
   }
 
-  tick() {
 
+  tick() {
     console.log(Plotly.d3.range(1,2,.1))
     const [a,b]= parseData(fs.readFileSync('data.txt', "utf8"))[0]
     const data = [{
@@ -141,28 +143,31 @@ class ScopeDisplayReact extends React.Component {
   }
 
 
-  componentDidMount() {
-   console.log('mount')
-  }
+  // componentDidMount() {
+  //  console.log('mount')
+  // }
 
-  componentWillUnmount() {
-    console.log('unmount')
-  }
+  // componentWillUnmount() {
+  //   console.log('unmount')
+  // }
 
   componentDidUpdate(prevProps) {
     if(prevProps.numPointsToPlotEachTick != this.props.numPointsToPlotEachTick) this.tick()
     console.log('updated=>',this.props.numPointsToPlotEachTick,prevProps.numPointsToPlotEachTick)
     console.log(this.myRef)
+    // this.points = this.myRef.querySelector(".scatterlayer .trace:first-of-type .points").getElementsByTagName("path");
+    startDragBehavior(this.myRef, this.figure)
   }
 
 
   render() {
     return (
       <Plot
-        ref={this.myRef} 
+        ref={this.myRef}
         data={this.state.data}
         layout={this.state.layout}
         revision={this.state.revision}
+        onUpdate={console.log}
         onInitialized={figure => this.setState(figure)}
       />
     );

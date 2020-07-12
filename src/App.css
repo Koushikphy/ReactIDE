@@ -37,3 +37,7 @@
 
 .scope-display {
 }
+
+.scatterlayer .trace:first-of-type .points path {
+  pointer-events: all;
+}
